@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shahanawaz & Sana</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  background:#111;
+  font-family:Georgia,serif;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* TAP TO OPEN SCREEN */
+#doors{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  display:flex;
+  background:#17100b;
+  perspective:1200px;
+}
+
+.door{
+  width:50%;
+  height:100%;
+  position:relative;
+  background:
+    linear-gradient(90deg,#3b2110,#8a5729,#4a2813);
+  border:3px solid #c99b55;
+  transition:transform 2s cubic-bezier(.7,0,.2,1);
+  box-shadow:inset 0 0 40px #000;
+}
+
+.left{
+  transform-origin:left center;
+  border-right:2px solid #d6ad67;
+}
+
+.right{
+  transform-origin:right center;
+  border-left:2px solid #d6ad67;
+}
+
+#doors.open .left{
+  transform:rotateY(-105deg);
+}
+
+#doors.open .right{
+  transform:rotateY(105deg);
+}
+
+/* Door decoration */
+.door:before{
+  content:"";
+  position:absolute;
+  inset:25px;
+  border:2px solid #d6ad67;
+}
+
+.door:after{
+  content:"✦";
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:55px;
+  color:#e5bd72;
+}
+
+/* Center button */
+#openBtn{
+  position:absolute;
+  z-index:10;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  padding:18px 28px;
+  border:2px solid #e5bd72;
+  border-radius:40px;
+  background:#24150c;
+  color:#ffe0a0;
+  font-size:18px;
+  letter-spacing:2px;
+  box-shadow:0 0 25px #000;
+}
+
+#openBtn:active{
+  transform:translate(-50%,-50%) scale(.95);
+}
+
+/* Invitation */
+section{
+  min-height:100vh;
+  padding:70px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.hero{
+  background:linear-gradient(#21150d,#080808);
+}
+
+h1{
+  color:#e6bd72;
+  font-size:42px;
+  margin:15px 0;
+}
+
+h2{
+  color:#e6bd72;
+  margin-bottom:20px;
+}
+
+.names{
+  font-size:27px;
+  line-height:1.7;
+}
+
+.card{
+  max-width:500px;
+  padding:35px 25px;
+  border:1px solid #c99b55;
+  border-radius:20px;
+  background:#1c120b;
+  box-shadow:0 0 25px #000;
+}
+
+.gold{
+  color:#e6bd72;
+}
+
+button{
+  padding:14px 22px;
+  border:0;
+  border-radius:30px;
+  background:#d5a957;
+  color:#21150d;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+/* Scratch */
+#scratch{
+  width:300px;
+  height:160px;
+  background:#555;
+  border-radius:15px;
+  margin-top:20px;
+  touch-action:none;
+}
+
+#message{
+  position:absolute;
+  color:#ffe0a0;
+  font-size:22px;
+}
+
+/* Countdown */
+#countdown{
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  width:100%;
+  margin-top:20px;
+  flex-wrap:nowrap;
+}
+
+.time-box{
+  width:62px;
+  height:62px;
+  flex:0 0 62px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  border:1px solid #e6bd72;
+  border-radius:9px;
+  background:linear-gradient(145deg,#3b2110,#211008);
+  box-shadow:0 4px 12px rgba(0,0,0,.35);
+}
+
+.time-number{
+  display:block;
+  font-size:20px;
+  font-weight:bold;
+  color:#e6bd72;
+}
+
+.time-label{
+  display:block;
+  margin-top:3px;
+  font-size:8px;
+  color:white;
+  letter-spacing:1px;
+}
+.date-box{
+  margin-top:25px;
+  padding:20px 15px;
+  border-top:1px solid #e6bd72;
+  border-bottom:1px solid #e6bd72;
+}
+
+.date{
+  font-size:32px;
+  color:#e6bd72;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+
+.time{
+  font-size:22px;
+  margin-top:12px;
+  color:white;
+}
+
+
+/* PREMIUM SCRATCH CARD */
+.scratch-wrap{
+  position:relative;
+  width:min(360px,92vw);
+  height:245px;
+  margin:25px auto 0;
+  border:2px solid #8b632c;
+  border-radius:24px;
+  background:linear-gradient(135deg,#3b2110,#8b5d28,#d0a85f,#5a3217);
+  box-shadow:0 10px 30px rgba(45,25,5,.5);
+  overflow:hidden;
+}
+
+.scratch-wrap:before{
+  content:"☪";
+  position:absolute;
+  left:8px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:42px;
+  color:#f7dfa8;
+  z-index:3;
+}
+
+.scratch-wrap:after{
+  content:"✦";
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:42px;
+  color:#f7dfa8;
+  z-index:3;
+}
+
+#message{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px 50px;
+  color:#fff1c9;
+  font-size:14px;
+  line-height:1.5;
+  text-align:center;
+  z-index:1;
+  font-weight:bold;
+}
+
+#scratch{
+  position:absolute;
+  left:18px;
+  top:18px;
+  z-index:2;
+  width:calc(100% - 36px);
+  height:calc(100% - 36px);
+  margin:0;
+  border-radius:16px;
+  touch-action:none;
+}
+
+/* DOOR OPEN */
+function openDoor(){
+
+  document.getElementById("doors").classList.add("open");
+
+  setTimeout(function(){
+
+    document.getElementById("doors").style.display="none";
+
+  },2200);
+}
+
+
+/* COUNTDOWN */
+
+let target =
+new Date("December 22, 2026 19:00:00").getTime();
+
+setInterval(function(){
+
+  let now = new Date().getTime();
+
+  let distance = target-now;
+
+  let days = Math.floor(distance/(1000*60*60*24));
+  let hours = Math.floor(
+    (distance%(1000*60*60*24))/(1000*60*60)
+  );
+
+  let minutes = Math.floor(
+    (distance%(1000*60*60))/(1000*60)
+  );
+
+  let seconds = Math.floor(
+    (distance%(1000*60))/1000
+  );
+
+  document.getElementById("days").textContent=String(days).padStart(2,"0");
+  document.getElementById("hours").textContent=String(hours).padStart(2,"0");
+  document.getElementById("minutes").textContent=String(minutes).padStart(2,"0");
+  document.getElementById("seconds").textContent=String(seconds).padStart(2,"0");
+
+},1000);
+
+
+/* MAP */
+
+function openMap(){
+
+  window.open(
+    "https://www.google.com/maps/search/?api=1&query=Wageshwar+Temple+Wagholi+Pune",
+    "_blank"
+  );
+
+}
+
+
+/* SCRATCH CARD */
+
+let canvas=document.getElementById("scratch");
+let ctx=canvas.getContext("2d");
+
+ctx.fillStyle="#999";
+ctx.fillRect(0,0,300,160);
+
+ctx.fillStyle="#333";
+ctx.font="bold 20px Arial";
+ctx.textAlign="center";
+ctx.fillText("SCRATCH HERE ✨",150,85);
+
+let scratching=false;
+
+function scratch(x,y){
+
+  ctx.globalCompositeOperation="destination-out";
+
+  ctx.beginPath();
+  ctx.arc(x,y,25,0,Math.PI*2);
+  ctx.fill();
+
+}
+
+canvas.addEventListener("touchstart",function(e){
+
+  scratching=true;
+
+});
+
+canvas.addEventListener("touchmove",function(e){
+
+  e.preventDefault();
+
+  if(!scratching)return;
+
+  let rect=canvas.getBoundingClientRect();
+
+  let x=e.touches[0].clientX-rect.left;
+  let y=e.touches[0].clientY-rect.top;
+
+  scratch(x,y);
+
+});
+
+canvas.addEventListener("touchend",function(){
+
+  scratching=false;
+
+});
+
+</script>
+
+</body>
+</html>
